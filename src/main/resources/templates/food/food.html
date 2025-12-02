@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body {
+            font-family: 'Pretendard', sans-serif;
+            background: #f1f5f9;
+            padding: 40px;
+        }
+
+        .rainbow-table-container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.18);
+            background: white;
+        }
+
+        /* 진한 무지개 헤더 */
+        .rainbow-header {
+            background: linear-gradient(90deg,
+                #FF0000,  /* Red */
+                #FF7F00,  /* Orange */
+                #FFEA00,  /* Yellow */
+                #00CE00,  /* Green */
+                #0079FF,  /* Blue */
+                #4A00E0,  /* Indigo */
+                #9900FF   /* Purple */
+            );
+            padding: 20px 22px;
+            color: white;
+            font-size: 22px;
+            font-weight: 700;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+
+        .rainbow-text {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(90deg,
+                #ff3a2f,  /* Red */
+                #ff7a00,  /* Orange */
+                #ffd400,  /* Yellow */
+                #6bc800,  /* Green */
+                #0074ff,  /* Blue */
+                #2e29ff,  /* Indigo */
+                #a200ff   /* Purple */
+            );
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        thead th {
+            background: #ffffff;
+            padding: 14px;
+            font-weight: 700;
+            text-align: center;
+            border-bottom: 3px solid #e2e8f0;
+            font-size: 15px;
+        }
+
+        tbody td {
+            padding: 13px;
+            text-align: center;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 15px;
+            color: #1e293b;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        tbody tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+
+        /* Hover 시 강한 무지개 효과 */
+        tbody tr:hover {
+            background: linear-gradient(90deg,
+                rgba(255, 0, 0, 0.20),
+                rgba(255, 127, 0, 0.20),
+                rgba(255, 234, 0, 0.20),
+                rgba(0, 206, 0, 0.20),
+                rgba(0, 121, 255, 0.20),
+                rgba(74, 0, 224, 0.20),
+                rgba(153, 0, 255, 0.20)
+            );
+            transition: background 0.25s ease-in-out;
+        }
+  </style>
+</head>
+<body>
+
+<div class="rainbow-table-container">
+
+
+    <div th:if="${param.saveCk}">
+      <span>저장에 성공하였습니다!</span>
+    </div>
+
+    <div th:if="${param.updateCk}">
+      <span>수정에 성공하였습니다!</span>
+    </div>
+
+
+
+    <h2 class="rainbow-text">
+      음식 상세
+    </h2>
+
+    <div>
+      <span>ID: </span><th:block th:text="${food.id}"></th:block>
+    </div>
+    <div>
+      <span>이름: </span><th:block th:text="${food.name}"></th:block>
+    </div>
+    <div>
+      <span>가격: </span><th:block th:text="${food.price}"></th:block>
+    </div>
+
+  <div>
+    <button th:onclick="|location.href='@{/foods}'|" th:text="목록으로"></button>
+    <button th:onclick="|location.href='@{/foods/{id}/update(id = ${food.id})}'|" th:text="수정"></button>
+    <form th:action="@{/foods/{id}/delete(id = ${food.id})}" method="post">
+      <button type="submit">삭제</button>
+    </form>
+  </div>
+
+
+</div>
+
+</body>
+</html>

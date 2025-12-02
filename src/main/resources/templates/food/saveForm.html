@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    body {
+        font-family: 'Pretendard', sans-serif;
+        background: #f3f4f6;
+        padding: 40px;
+    }
+
+    .rainbow-form-container {
+        max-width: 500px;
+        margin: 0 auto;
+        background: #ffffff;
+        border-radius: 14px;
+        box-shadow: 0 6px 22px rgba(0, 0, 0, 0.18);
+        padding: 30px 35px;
+        border: 3px solid transparent;
+        background-image: linear-gradient(#ffffff, #ffffff),
+            linear-gradient(90deg,
+                #ff3a2f,  /* Red */
+                #ff7a00,  /* Orange */
+                #ffd400,  /* Yellow */
+                #6bc800,  /* Green */
+                #0074ff,  /* Blue */
+                #2e29ff,  /* Indigo */
+                #a200ff   /* Purple */
+            );
+        background-origin: border-box;
+        background-clip: padding-box, border-box;
+    }
+
+    .rainbow-form-title {
+        font-size: 26px;
+        font-weight: 800;
+        margin-bottom: 25px;
+        background: linear-gradient(90deg,
+            #ff3a2f,
+            #ff7a00,
+            #ffd400,
+            #6bc800,
+            #0074ff,
+            #2e29ff,
+            #a200ff
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-align: center;
+    }
+
+    .form-group {
+        margin-bottom: 18px;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 6px;
+        color: #1f2937;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        font-size: 15px;
+        outline: none;
+        transition: border-color 0.25s ease;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        border-color: #0074ff;
+        box-shadow: 0 0 0 2px rgba(0, 116, 255, 0.25);
+    }
+
+    /* 무지개 버튼 */
+    .rainbow-btn {
+        width: 100%;
+        margin-top: 22px;
+        padding: 14px;
+        font-size: 16px;
+        font-weight: 700;
+        color: white;
+        background: linear-gradient(90deg,
+            #ff3a2f,
+            #ff7a00,
+            #ffd400,
+            #6bc800,
+            #0074ff,
+            #2e29ff,
+            #a200ff
+        );
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: opacity 0.25s ease;
+    }
+
+    .rainbow-btn:hover {
+        opacity: 0.85;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="rainbow-form-container">
+
+  <div class="rainbow-form-title">
+    음식 등록 폼
+  </div>
+
+  <form th:object="${food}" th:action method="post">
+    <div class="form-group">
+      <label>이름</label>
+      <input type="text" placeholder="햄버거" th:field="*{name}">
+    </div>
+
+    <div class="form-group">
+      <label>가격</label>
+      <input type="number" placeholder="10000" th:field="*{price}">
+    </div>
+
+    <div class="form-group">
+      <label>사진</label>
+      <input type="file" th:field="*{image}">
+    </div>
+
+
+
+    <button type="submit" class="rainbow-btn">저장</button>
+  </form>
+
+</div>
+
+</body>
+</html>
