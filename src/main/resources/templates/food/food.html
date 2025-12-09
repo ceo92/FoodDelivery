@@ -129,6 +129,15 @@
       <span>가격: </span><th:block th:text="${food.price}"></th:block>
     </div>
 
+    <div>
+      <h5>이미지</h5>
+      <div>
+
+      </div>
+    </div>
+
+
+
   <div>
     <button th:onclick="|location.href='@{/foods}'|" th:text="목록으로"></button>
     <button th:onclick="|location.href='@{/foods/{id}/update(id = ${food.id})}'|" th:text="수정"></button>

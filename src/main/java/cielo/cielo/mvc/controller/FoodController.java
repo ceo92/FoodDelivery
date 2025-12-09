@@ -4,8 +4,13 @@ import cielo.cielo.domain.Food;
 import cielo.cielo.mvc.dto.FoodSaveDTO;
 import cielo.cielo.mvc.dto.FoodUpdateDTO;
 import cielo.cielo.mvc.service.FoodService;
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,7 +30,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class FoodController {
 
   private final FoodService foodService;
-
+  @Value("${file.dir}")
+  private String fileDir;
   @GetMapping
   public String getFoods(Model model){
     model.addAttribute("foods", foodService.findAll());
@@ -45,8 +51,19 @@ public class FoodController {
   }
 
   @PostMapping("/save")
-  public String saveForm(@Validated @ModelAttribute("food") FoodSaveDTO foodSaveDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes){
-    Long saveId = foodService.save(foodSaveDTO);
+  public String saveForm(@Validated @ModelAttribute("food") FoodSaveDTO foodSaveDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes) throws IOException {
+    // 이게 저장 끝임 ㅋㅋ ㅈㄴ간단하네 ;;
+    String originalFileName = foodSaveDTO.image().getOriginalFilename();
+    int delimiter = originalFileName.lastIndexOf(".");
+    String onlyFileName = originalFileName.substring(0, delimiter);
+    String extension = originalFileName.substring(delimiter, originalFileName.length()); // 확장자
+
+    String storeFileName = UUID.randomUUID() + extension;
+
+
+    String storageStoreFileName = fileDir + storeFileName;
+    foodSaveDTO.image().transferTo(new File(storageStoreFileName)); //스토리지(내 기준 로컬)에 저장
+    Long saveId = foodService.save(foodSaveDTO); // DB에 파일명 저장
     redirectAttributes.addAttribute("id", saveId);
     redirectAttributes.addAttribute("saveCk", true);
     return "redirect:/foods/{id}";

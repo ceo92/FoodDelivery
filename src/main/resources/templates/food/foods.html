@@ -123,14 +123,23 @@
     </tr>
 
     </tbody>
-     <button type="button"
-            th:onclick="|location.href='@{/foods/save}'|">
-      음식 등록
-    </button>
+     <button id="btnSave" type="button" onclick="javascript">음식 등록</button>
   </table>
 
 
 </div>
 
+<script src="/lib/jquery.js"></script>
+<script>
+  $('#btnSave').on('click', function(){
+      console.log('asdds');
+      location.href = 'foods/save';
+  });
+
+
+
+
+
+</script>
 </body>
 </html>

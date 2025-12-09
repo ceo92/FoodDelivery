@@ -117,7 +117,7 @@
     음식 등록 폼
   </div>
 
-  <form th:object="${food}" th:action method="post">
+  <form th:object="${food}" th:action method="post" enctype="multipart/form-data">
     <div class="form-group">
       <label>이름</label>
       <input type="text" placeholder="햄버거" th:field="*{name}">
