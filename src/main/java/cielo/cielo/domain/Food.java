@@ -1,7 +1,9 @@
 package cielo.cielo.domain;
 
 import cielo.cielo.mvc.dto.FoodUpdateDTO;
+import cielo.cielo.mvc.dto.UploadFile;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,10 +28,10 @@ import lombok.Setter;
 public class Food {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
-    @Column(nullable = true)
-    private String image;
+
+    @Embedded
+    private UploadFile image;
 
     private Integer price;
     private LocalDateTime createdDateTime;
@@ -37,7 +39,9 @@ public class Food {
 
     public void updateFood(FoodUpdateDTO foodUpdateDTO) {
         setName(foodUpdateDTO.name());
-        setImage(foodUpdateDTO.image());
+//        setImage(foodUpdateDTO.image());
         setPrice(foodUpdateDTO.price());
     }
+
+
 }

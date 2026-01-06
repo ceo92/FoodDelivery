@@ -4,7 +4,9 @@ import cielo.cielo.domain.Food;
 import cielo.cielo.mvc.dto.FoodResponseDTO;
 import cielo.cielo.mvc.dto.FoodSaveDTO;
 import cielo.cielo.mvc.dto.FoodUpdateDTO;
+import cielo.cielo.mvc.dto.UploadFile;
 import cielo.cielo.mvc.repository.FoodRepository;
+import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,10 +17,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class FoodService {
 
+  private final FileService fileService;
   private final FoodRepository foodRepository;
   @Transactional
-  public Long save(FoodSaveDTO foodSaveDTO) {
-    Food food = foodSaveDTO.toEntity();
+  public Long save(FoodSaveDTO foodSaveDTO) throws IOException {
+    UploadFile uploadFile = fileService.storeFileToStorageAndGetUploadFile(foodSaveDTO.image());
+    Food food = foodSaveDTO.toEntity(uploadFile);
     return foodRepository.save(food);
   }
 

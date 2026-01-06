@@ -6,8 +6,8 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.web.multipart.MultipartFile;
 
 public record FoodSaveDTO(@NotBlank String name, MultipartFile image, @NotNull Integer price) {
-  public Food toEntity(){
-    return Food.builder().name(name()).image(image().getOriginalFilename()).price(price()).build();
+  public Food toEntity(UploadFile uploadFile){
+    return Food.builder().name(name()).image(uploadFile).price(price()).build();
   }
 }
 
