@@ -9,7 +9,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,4 +35,13 @@ public class Member {
     this.name = name;
     this.address = address;
   }
+
+  // 도메인 주도 패턴(서비스가 아닌 엔티티에 비즈니스 로직, 응집도 강화!)
+  public void update(String name, Address address) {
+    this.name = name;
+    this.address = address;
+  }
+
+
+
 }

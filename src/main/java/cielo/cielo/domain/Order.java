@@ -1,6 +1,7 @@
 package cielo.cielo.domain;
 
-import cielo.cielo.enumerate.OrderStatus;
+import cielo.cielo.mvc.enumerate.DeliveryStatus;
+import cielo.cielo.mvc.enumerate.OrderStatus;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,21 +12,22 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "orders")
-@Getter
+@Getter @Setter(AccessLevel.PRIVATE)
 public class Order {
 
   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,6 +45,7 @@ public class Order {
   @Enumerated(value = EnumType.STRING)
   private OrderStatus orderStatus;
 
+  @DateTimeFormat(pattern = "yyyy/mm/dd")
   private LocalDateTime orderDate;
 
   @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -50,10 +53,38 @@ public class Order {
   private Delivery delivery;
 
 
+  // 정적 팩토리 메서드: 복잡한 연관관계 + 정해진 값으로 필드 설정
+  public static Order createOrder(Member member, Delivery delivery, OrderItem ... orderItems){
+    Order order = new Order();
+    order.addMember(member);
+    order.addDelivery(delivery);
+    Arrays.stream(orderItems).forEach(orderItem -> order.addOrderItem(orderItem));
+    order.setOrderDate(LocalDateTime.now());
+    order.setOrderStatus(OrderStatus.ORDER);
+    return order;
+  }
+
+  /**
+   * 비즈니스 로직
+   */
+
+  public void cancel(){
+    DeliveryStatus deliveryStatus = delivery.getStatus();
+    if(deliveryStatus == DeliveryStatus.COMP){
+      throw new IllegalStateException("배송이 시작된 상품은 취소가 불가능합니다.");
+    }
+    setOrderStatus(OrderStatus.CANCEL);
+    orderItems.stream().forEach(orderItem -> orderItem.cancel());
+
+  }
+
+  public int getTotalPrice(){
+    return this.orderItems.stream().mapToInt(OrderItem::countOrderPrice).sum();
+  }
+
   /**
    * 연관관계 편의 메서드
    */
-
   public void addMember(Member member){
     this.member = member;
     member.getOrders().add(this);
@@ -63,5 +94,22 @@ public class Order {
     this.delivery = delivery;
     delivery.setOrder(this);
   }
+
+  public void addOrderItem(OrderItem orderItem){
+    orderItem.setOrder(this);
+    this.orderItems.add(orderItem);
+  }
+
+  // 이건 맞지 않음,
+/*  public void addOrderItems(List<OrderItem> orderItems) {
+    this.orderItems = orderItems;
+    orderItems.forEach(orderItem -> orderItem.setOrder(this));
+  }*/
+
+
+
+
+
+
 
 }

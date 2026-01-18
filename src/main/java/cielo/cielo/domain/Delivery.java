@@ -1,6 +1,6 @@
 package cielo.cielo.domain;
 
-import cielo.cielo.enumerate.DeliveryStatus;
+import cielo.cielo.mvc.enumerate.DeliveryStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -12,7 +12,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -38,5 +37,12 @@ public class Delivery {
 
   @Enumerated(EnumType.STRING)
   private DeliveryStatus status;
+
+  public void setDeliveryStatus(DeliveryStatus status){
+    this.status = status;
+  }
+  public void setAddress(Address address){
+    this.address = address;
+  }
 
 }
